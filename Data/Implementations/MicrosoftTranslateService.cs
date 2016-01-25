@@ -14,14 +14,49 @@ namespace Data.Implementations
     {
         public string DetectLanguage(string textToDetect)
         {
-            string uri = "http://api.microsofttranslator.com/v2/Http.svc/Detect?text=" + textToDetect;
+            return HttpCall("http://api.microsofttranslator.com/v2/Http.svc/Detect",
+                new Dictionary<string, string> { { "text", textToDetect } },
+                null);
+        }
+
+        public string Translate(string textToTranslate, Language targetLang, Language sourceLang)
+        {
+            return HttpCall("http://api.microsofttranslator.com/v2/Http.svc/Translate", 
+                        new Dictionary<string, string> {
+                            { "text", textToTranslate },
+                            { "from", getLanguageCode(sourceLang) },
+                            { "to", getLanguageCode(targetLang) } },
+                        null
+                        );
+        }
+
+        private string HttpCall(string baseUri, Dictionary<string,string> queryParameters, Dictionary<string,string> headers )
+        {
+            string uri = baseUri;
+            if (queryParameters != null && queryParameters.Count > 0)
+            {
+                uri += "?";
+                foreach (var key in queryParameters.Keys)
+                {
+                    uri += String.Format("&{0}={1}", key, queryParameters[key]);
+                }
+            }
+
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             AdmAuthentication auth = new AdmAuthentication("UCL-Cities-Unlocked-Test", "sn9Jqb+5CB7vTjyqDI9dT2gR+ipwxeoJZdwDlhi7ZDk=");
             var authToken = auth.GetAccessToken();
             httpWebRequest.Headers["Authorization"] = "Bearer " + authToken.access_token;
 
-            System.Net.WebResponse response = null;
+            if (headers != null && headers.Count > 0)
+            {
+                foreach (var key in headers.Keys)
+                {
+                    httpWebRequest.Headers[key] = headers[key];
+                }
+            }
 
+
+            System.Net.WebResponse response = null;
             try
             {
                 var aResult = httpWebRequest.GetResponseAsync();
@@ -47,45 +82,8 @@ namespace Data.Implementations
                     response = null;
                 }
             }
+        } 
 
-        }
-
-        public string Translate(string textToTranslate, Language targetLang, Language sourceLang)
-        {
-            string uri = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" + textToTranslate + "&from=" + getLanguageCode(sourceLang) + "&to=" + getLanguageCode(targetLang);
-
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            AdmAuthentication auth = new AdmAuthentication("UCL-Cities-Unlocked-Test", "sn9Jqb+5CB7vTjyqDI9dT2gR+ipwxeoJZdwDlhi7ZDk=");
-            var authToken = auth.GetAccessToken();
-            httpWebRequest.Headers["Authorization"] = "Bearer " + authToken.access_token;
-
-            System.Net.WebResponse response = null;
-            try
-            {
-                var aResult = httpWebRequest.GetResponseAsync();
-                aResult.Wait();
-                response = aResult.Result;
-                using (System.IO.Stream stream = response.GetResponseStream())
-                {
-                    System.Runtime.Serialization.DataContractSerializer dcs = new System.Runtime.Serialization.DataContractSerializer(Type.GetType("System.String"));
-                    return  (string)dcs.ReadObject(stream);
-
-                }
-            }
-            catch
-            {
-                //TODO: Logging
-                throw;
-            }
-            finally
-            {
-                if (response != null)
-                {
-                    response.Dispose();
-                    response = null;
-                }
-            }
-        }
         private static string GenerateTranslateOptionsRequestBody(string category, string contentType, string ReservedFlags, string State, string Uri, string user)
         {
             string body = "<TranslateOptions xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\">" +
