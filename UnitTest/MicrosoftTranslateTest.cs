@@ -21,5 +21,13 @@ namespace UnitTest
             var result = svc.Translate("hola", Common.Language.BritishEnglish, Common.Language.Spanish);
             Assert.AreEqual(result.ToLower(), "hello");
         }
+
+        [TestMethod]
+        public void TestLanguageDetect()
+        {
+            var svc = new Data.Implementations.MicrosoftTranslateService();
+            var result = svc.DetectLanguage("hola, buenos dias");
+            Assert.AreEqual(result, "es");
+        }
     }
 }

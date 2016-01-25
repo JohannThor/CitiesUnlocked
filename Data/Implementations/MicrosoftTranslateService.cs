@@ -12,8 +12,41 @@ namespace Data.Implementations
 {
     public class MicrosoftTranslateService : Data.Interfaces.ITranslationService
     {
-        public MicrosoftTranslateService()
+        public string DetectLanguage(string textToDetect)
         {
+            string uri = "http://api.microsofttranslator.com/v2/Http.svc/Detect?text=" + textToDetect;
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            AdmAuthentication auth = new AdmAuthentication("UCL-Cities-Unlocked-Test", "sn9Jqb+5CB7vTjyqDI9dT2gR+ipwxeoJZdwDlhi7ZDk=");
+            var authToken = auth.GetAccessToken();
+            httpWebRequest.Headers["Authorization"] = "Bearer " + authToken.access_token;
+
+            System.Net.WebResponse response = null;
+
+            try
+            {
+                var aResult = httpWebRequest.GetResponseAsync();
+                aResult.Wait();
+                response = aResult.Result;
+                using (System.IO.Stream stream = response.GetResponseStream())
+                {
+                    System.Runtime.Serialization.DataContractSerializer dcs = new System.Runtime.Serialization.DataContractSerializer(Type.GetType("System.String"));
+                    return (string)dcs.ReadObject(stream);
+
+                }
+            }
+            catch
+            {
+                //TODO: Logging
+                throw;
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Dispose();
+                    response = null;
+                }
+            }
 
         }
 
@@ -25,16 +58,7 @@ namespace Data.Implementations
             AdmAuthentication auth = new AdmAuthentication("UCL-Cities-Unlocked-Test", "sn9Jqb+5CB7vTjyqDI9dT2gR+ipwxeoJZdwDlhi7ZDk=");
             var authToken = auth.GetAccessToken();
             httpWebRequest.Headers["Authorization"] = "Bearer " + authToken.access_token;
-            //httpWebRequest.ContentType = "text/xml";
-            //httpWebRequest.Method = "POST";
-            //var asyncResult = httpWebRequest.GetRequestStreamAsync();
-            //asyncResult.Wait();
-            //using (System.IO.Stream stream =  asyncResult.Result)
-            //{
-            //    var requestBody = GenerateTranslateOptionsRequestBody("general", "text/plain", "", "", "", "");
-            //    byte[] arrBytes = System.Text.Encoding.UTF8.GetBytes(requestBody);
-            //    stream.Write(arrBytes, 0, arrBytes.Length);
-            //}
+
             System.Net.WebResponse response = null;
             try
             {
@@ -50,6 +74,7 @@ namespace Data.Implementations
             }
             catch
             {
+                //TODO: Logging
                 throw;
             }
             finally

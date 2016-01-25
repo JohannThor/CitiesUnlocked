@@ -13,10 +13,10 @@ namespace UnitTest
         [TestMethod]
         public void TestPeerList()
         { 
-            var connector = new WindowsPhoneUI.BluetoothConnector();
-            var peers = connector.getPeers();
-            peers.Wait();
-            var result = peers.Result;
+            //var connector = new WindowsPhoneUI.BluetoothConnector();
+            //var peers = connector.getPeers();
+            //peers.Wait();
+            //var result = peers.Result;
         }
     }
 }

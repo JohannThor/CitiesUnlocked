@@ -9,6 +9,11 @@ namespace Data.Implementations.Mock
 {
     public class TranslateService : ITranslationService
     {
+        public string DetectLanguage(string textToDetect)
+        {
+            throw new NotImplementedException();
+        }
+
         public string Translate(string textToTranslate, Common.Language sourceLang, Common.Language targetLang)
         {
             if (sourceLang == Common.Language.BritishEnglish)
