@@ -1,0 +1,10 @@
+{
+  "locked": false,
+  "version": 1,
+  "targets": {},
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    "": [ ]
+  },
+  "frameworks": {"WindowsPhoneApp,Version=v8.1": {}}
+}
