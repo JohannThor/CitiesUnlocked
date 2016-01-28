@@ -7,9 +7,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
 using System.Net;
-using Google.Apis.Translate.v2;
-using Google.Apis.Services;
-using Translate.WP.TranslateText.Common;
+using Newtonsoft.Json;
 
 namespace Data.Implementations
 {
@@ -58,7 +56,7 @@ namespace Data.Implementations
                     formatCounter++;
                 }
             }
-
+            
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
 
             System.Net.WebResponse response = null;
@@ -67,10 +65,30 @@ namespace Data.Implementations
                 var aResult = httpWebRequest.GetResponseAsync();
                 aResult.Wait();
                 response = aResult.Result;
+                
                 using (System.IO.Stream stream = response.GetResponseStream())
                 {
-                    System.Runtime.Serialization.DataContractSerializer dcs = new System.Runtime.Serialization.DataContractSerializer(Type.GetType("System.String"));
-                    return (string)dcs.ReadObject(stream);
+                    string strContent = null;
+                    using (System.IO.StreamReader sr = new System.IO.StreamReader(stream))
+                    {
+                        //Need to return this response 
+                        strContent = sr.ReadToEnd();
+                    }
+                    
+                    JsonTextReader reader = new JsonTextReader(new System.IO.StringReader(strContent));
+                    while (reader.Read())
+                    {
+                        if (reader.Value != null)
+                        {
+                           if (reader.Value.Equals("translatedText") || reader.Value.Equals("language"))
+                            {
+                                reader.Read();
+                                return (string)reader.Value;
+                            }
+                        }
+                    }
+
+                    return "-1";
                 }
             }
             catch
