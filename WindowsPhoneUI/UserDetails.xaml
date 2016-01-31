@@ -1,0 +1,56 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="WindowsPhoneUI.UserDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,35,0,28">
+            <TextBlock Text="Cities Unlocked" FontSize="20"  />
+            <TextBlock Text="Language Preference" FontSize="40" />
+        </StackPanel>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <StackPanel>
+                <TextBlock x:Name="language" Text="Language" Margin="43,0" FontSize="24"/>
+                <TextBox x:Name="languageBox" TextWrapping="Wrap" TextChanged="languageBox_TextChanged" Margin="43,0"/>
+                <Button x:Name="bt_save" Content="Save" Width="370" Click="bt_save_Click" Margin="43,0"/>
+                <Button x:Name="bt_read" Content="Read" Width="370" Click="bt_read_Click" Margin="43,0"/>
+                <Button x:Name="bt_delete" Content="Delete" Width="370" Click="bt_delete_Click" Margin="43,0"/>
+                <TextBlock x:Name="name" Text="name" Margin="43,0" FontSize="24"/>
+                <TextBox
+            		x:Name="NameBox"
+                    
+            		TextWrapping="Wrap"
+            		TextChanged="languageBox_TextChanged"
+            		Margin="43,0" />
+                <Button x:Name="bt_save_Name"
+            		Content="Save"
+            		Width="370"
+            		Click="bt_save_name_Click" />
+                <Button x:Name="bt_read_Name"
+            		Content="Read"
+            		Width="370"
+            		Click="bt_read_Name_Click" />
+                <Button x:Name="bt_delete_Name"
+            		Content="Delete"
+            		Width="370"
+            		Click="bt_delete_Name_Click" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</phone:PhoneApplicationPage>
