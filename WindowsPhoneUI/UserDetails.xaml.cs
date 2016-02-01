@@ -8,10 +8,7 @@ using Microsoft.Phone.Controls;
 using System.IO;
 using Windows.Storage;
 using Windows.Storage.Streams;
-using System.Collections.Generic;
-using Windows.Foundation;
-using Windows.Foundation.Metadata;
-using Windows.UI.Popups;
+
 
 
 
@@ -26,11 +23,6 @@ namespace WindowsPhoneUI
         {
             InitializeComponent();
         }
-        private void languageBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private async void bt_save_Click(object sender, RoutedEventArgs e)
         {
             if (languageBox.Text != "")
@@ -46,6 +38,7 @@ namespace WindowsPhoneUI
                 MessageBox.Show("Cannot be null", "Error Dialog", MessageBoxButton.OK);
             }
         }
+
 
         private async void bt_read_Click(object sender, RoutedEventArgs e)
         {
@@ -77,10 +70,31 @@ namespace WindowsPhoneUI
             }
             catch (Exception e)
             {
-                text = "Read File Failed：" + e.Message;
+                text = "There is no stored information." + e.Message;
             }
             return text;
         }
+        public async Task DeleteFile(string filename)
+        {
+            string text;
+            try
+            {
+                //root
+                IStorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
+                //file
+                IStorageFile storageFile = await applicationFolder.GetFileAsync(filename);
+                //delete
+                await storageFile.DeleteAsync();
+                text = "Delete Successfully";
+            }
+            catch (Exception exce)
+            {
+                text = "There is no information to delete." + exce.Message;
+            }
+            //await new MessageDialog(text).ShowAsync();
+            MessageBox.Show(text, "Error Dialog", MessageBoxButton.OK);
+        }
+
         //write into the file in the root folder
         public async Task WriteFile(string fileName, string content)
         {
@@ -92,23 +106,8 @@ namespace WindowsPhoneUI
 
         private async void bt_delete_Click(object sender, RoutedEventArgs e)
         {
-            string text;
-            try
-            {
-                //root
-                IStorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
-                //file
-                IStorageFile storageFile = await applicationFolder.GetFileAsync(languageFile);
-                //delete
-                await storageFile.DeleteAsync();
-                text = "Delete Successfully";
-            }
-            catch (Exception exce)
-            {
-                text = "Delete Error:" + exce.Message;
-            }
-            //await new MessageDialog(text).ShowAsync();
-            MessageBox.Show(text, "Error Dialog", MessageBoxButton.OK);
+            //string x = await DeleteFile(languageFile);
+            await DeleteFile(languageFile);
 
 
         }
@@ -134,7 +133,7 @@ namespace WindowsPhoneUI
             else
             {
                 //await new MessageDialog("null").ShowAsync();
-                MessageBox.Show("null!", "Save", MessageBoxButton.OK);
+                MessageBox.Show("Cannot be null!", "Save", MessageBoxButton.OK);
             }
         }
 
@@ -150,25 +149,9 @@ namespace WindowsPhoneUI
 
         private async void bt_delete_Name_Click(object sender, RoutedEventArgs e)
         {
-            string text;
-            try
-            {
-                //root
-                IStorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
-                //file
-                IStorageFile storageFile = await applicationFolder.GetFileAsync(nameFile);
-                //delete
-                await storageFile.DeleteAsync();
-                text = "Delete Successfully";
-            }
-            catch (Exception exce)
-            {
-                text = "Delete Error:" + exce.Message;
-            }
-            //await new MessageDialog(text).ShowAsync();
-            MessageBox.Show(text, "Delete", MessageBoxButton.OK);
-
+            await DeleteFile(nameFile);
         }
+
     }
 
 
