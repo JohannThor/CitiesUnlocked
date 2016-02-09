@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="VIUI.UserName"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VIUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+
+            </Grid.RowDefinitions>
+            <Grid x:Name="TitlePanel" Grid.Row="0" >
+                <TextBlock Text="User Name" FontSize="40" Margin="12,30,12,0"/>
+            </Grid>
+            <Grid x:Name="textPanel" Grid.Row="1" >
+                <TextBlock x:Name="name"                            
+                           Text="Please set the user name" 
+                           Margin="12,0,12,0"
+                           FontSize="36"
+                           TextWrapping="Wrap"/>
+            </Grid>
+            <Grid x:Name="textPanel1" Grid.Row="2">
+                <TextBox x:Name="nameBox" 
+                     Margin="12,0,12,0"
+                         TextWrapping="Wrap"  
+                         FontSize="36" 
+                         HorizontalAlignment="Stretch"/>
+
+            </Grid>
+
+            <Grid x:Name="ButtonPanel" Grid.Row="3"  Margin="12,1,12,1">
+                <Button x:Name="bt_confirm" 
+                        Content="Confirm"  
+                        FontSize="48"
+                        Click="bt_confirm_Click" 
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"/>
+            </Grid>
+            <Grid x:Name="ButtonPanel2" Grid.Row="4"  Margin="12,1,12,1">
+                <Button x:Name="bt_clear" 
+                        Content="Clear"
+                        FontSize="48"
+                        Click="bt_clear_Click" 
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"/>
+            </Grid>
+            <Grid x:Name="ButtonPanel3" Grid.Row="5"  Margin="12,1,12,1">
+                <Button x:Name="bt_save" 
+                        Content="Save" 
+                        FontSize="48"
+                        Click="bt_save_Click" 
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"/>
+            </Grid>
+
+
+        </Grid>
+    </Grid>
+</Page>
